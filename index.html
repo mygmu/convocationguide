@@ -956,12 +956,16 @@ footer{background:var(--maroon-deep); color:#f1e6d4; margin-top:40px;}
     document.getElementById('mapwrap').scrollIntoView({behavior:'smooth',block:'center'});
   });});
 
-  /* ---------- hero background video (muted, 50% opacity) ---------- */
+  /* ---------- hero background video (muted, 8% opacity) ---------- */
   (function(){
     var host=document.getElementById('heroVideo'), hero=document.getElementById('home');
     if(!host||!hero) return;
     var reduceV=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(location.protocol==='file:'||reduceV) return;   /* YouTube needs a web address; skipped when opened as a local file */
+
+    var videoOpacity = '0.08'; /* Lower = more transparent (e.g., '0.05' = 5%, '0.1' = 10%) */
+    host.style.opacity = '0';
+
     var id='6s1Tj3pRfBA', f=document.createElement('iframe');
     f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&controls=0&loop=1&playlist='+id+'&playsinline=1&rel=0&modestbranding=1&disablekb=1&fs=0&iv_load_policy=3';
     f.allow='autoplay; encrypted-media'; f.title='Background video'; f.tabIndex=-1;
@@ -970,7 +974,7 @@ footer{background:var(--maroon-deep); color:#f1e6d4; margin-top:40px;}
     document.addEventListener('securitypolicyviolation',function(e){
       if(/frame|child|default/.test(e.effectiveDirective||e.violatedDirective||'') && /youtube/.test(e.blockedURI||'')){host.classList.remove('on'); if(f.parentNode) f.parentNode.removeChild(f);}
     });
-    f.addEventListener('load',function(){setTimeout(function(){if(f.parentNode) host.classList.add('on');},600);});
+    f.addEventListener('load',function(){setTimeout(function(){if(f.parentNode){ host.classList.add('on'); host.style.opacity=videoOpacity; }},600);});
     size(); window.addEventListener('resize',size); host.appendChild(f);
   })();
 
